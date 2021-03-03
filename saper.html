@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Saper - szybka implementacja lol</title>
+        <link rel="stylesheet/less" type="text/css" href="style.less" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/4.1.1/less.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"
+        ></script>
+
+        <script src="src/board.js"></script>
+        <script src="src/boarddisplay.js"></script>
+        <script src="src/main.js"></script>
+    </head>
+    <body>
+        <div id="settings">
+            <button class="exit" onclick="HideSettings()">X</button>
+            <p>
+                Width:
+                <input id="width" type="number" value="30" />
+            </p>
+            <p>
+                Height:
+                <input id="height" type="number" value="16" />
+            </p>
+            <p>
+                Mines:
+                <input id="minecount" type="number" value="99" />
+            </p>
+        </div>
+        <script>HideSettings()</script>
+        <div id="game">
+            <div id="controls">
+                <div id="flags" class="counter"><span></span></div>
+                <div id="time" class="counter"><span>0.0</span></div>
+                <button onclick="GenerateBoard()">Generate</button>
+                <button onclick="ShowSettings()"><i class="fas fa-cog"></i></button>
+            </div>
+            <div id="board"></div>
+        </div>
+        <script>
+            GenerateBoard();
+        </script>
+    </body>
+</html>

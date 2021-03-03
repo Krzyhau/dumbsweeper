@@ -1,0 +1,258 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+@color-main: #303132;
+@color-shadow: #202122;
+@color-highlight: #404142;
+
+@number-font: "Orbitron", Courier, monospace;
+@display-font: "Share Tech Mono", Courier, monospace;
+
+body {
+    background-color: #111213;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+}
+
+#settings {
+    width: 300px;
+    height:200px;
+    z-index: 999;
+    padding: 1em;
+    background-color: @color-main;
+
+    position: absolute;
+
+    border: 5px solid;
+    border-top-color: @color-highlight;
+    border-left-color: @color-highlight;
+    border-right-color: @color-shadow;
+    border-bottom-color: @color-shadow;
+
+    box-shadow: 0 5px 10px #0008;
+
+    p {
+        white-space: nowrap;
+    }
+
+    .exit{
+        position: absolute;
+        color:black;
+        border:none;
+        background:none;
+        top:0;
+        right:0;
+        font-weight: bold;
+        font-size:1.5em;
+    }
+}
+
+#game {
+    display: inline-block;
+    padding: 0.5em;
+    background-color: @color-main;
+    font-size: 30px;
+    user-select: none;
+}
+
+#controls {
+    display: flex;
+    
+    button{
+        height:100%;
+        background:@color-main;
+        font-size:1em;
+        color:#aaa;
+        border: 0.1em solid;
+        
+        border-top-color: @color-highlight;
+        border-left-color: @color-highlight;
+        border-right-color: @color-shadow;
+        border-bottom-color: @color-shadow;
+
+        &:active{
+            border-top-color: @color-shadow;
+            border-left-color: @color-shadow;
+            border-right-color: @color-highlight;
+            border-bottom-color: @color-highlight;
+        }
+    }
+}
+
+.counter {
+    height: 1.1em;
+    margin-right: 0.5em;
+    span {
+        max-height: 1.1em;
+        padding: 0.05em 0.1em;
+        display: flex;
+        justify-content: flex-end;
+
+        border: 0.1em solid;
+        border-top-color: @color-shadow;
+        border-left-color: @color-shadow;
+        border-right-color: @color-highlight;
+        border-bottom-color: @color-highlight;
+        font-family: @display-font;
+        font-weight: bold;
+        color: #db311e;
+        background: #1b0705;
+    }
+
+    &:before {
+        content: "";
+        display: block;
+        width: 1.3em;
+        height: 1.1em;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        float: left;
+        margin-top: 0.1em;
+    }
+
+    &#flags {
+        span {
+            width: 1.8em;
+        }
+        &:before {
+            background-image: url("img/flag.png");
+        }
+    }
+    &#time {
+        span {
+            width: 2.9em;
+        }
+        &:before {
+            background-image: url("img/timer.png");
+        }
+    }
+}
+
+#board .field.uncovered,
+body:active #board .field.selected {
+    border: 1px solid;
+    border-top-color: @color-main;
+    border-left-color: @color-main;
+    border-right-color: @color-shadow;
+    border-bottom-color: @color-shadow;
+}
+
+#board {
+    margin-top: 0.5em;
+    border: 0.15em solid;
+    border-top-color: @color-shadow;
+    border-left-color: @color-shadow;
+    border-right-color: @color-highlight;
+    border-bottom-color: @color-highlight;
+    z-index: 0;
+
+    display: none;
+    flex-direction: column;
+
+    .line {
+        height: 1em;
+        display: flex;
+    }
+
+    .field {
+        width: 1em;
+        height: 1em;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 100;
+
+        background-color: @color-main;
+        border: 0.1em solid;
+        border-top-color: @color-highlight;
+        border-left-color: @color-highlight;
+        border-right-color: @color-shadow;
+        border-bottom-color: @color-shadow;
+
+        span {
+            position: absolute;
+            font-size: 0.8em;
+            top: -0.1em;
+            right: 0.1em;
+            left: 0;
+            text-align: center;
+            font-family: @number-font;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 0.1em;
+
+        &.flag::before,
+        &.mine::before {
+            content: "";
+            display: block;
+            position: absolute;
+        }
+
+        &.flag::before {
+            width: 0.5em;
+            height: 0.6em;
+            top: 0.1em;
+            background: url("img/flag.png");
+            background-size: cover;
+        }
+
+        &.mine::before,
+        &.flag.mistake::before {
+            width: 0.8em;
+            height: 0.8em;
+            top: 0.05em;
+            background: url("img/mine.png");
+            background-size: cover;
+        }
+
+        &.mine.mistake {
+            background: #e35241;
+        }
+
+        &.flag.mistake {
+            color: transparent;
+            &::before {
+                background: url("img/notmine.png");
+                background-size: cover;
+            }
+        }
+
+        &.num1 {
+            color: #4196ec;
+        }
+        &.num2 {
+            color: #67ac5b;
+        }
+        &.num3 {
+            color: #e35241;
+        }
+        &.num4 {
+            color: #3f53af;
+        }
+        &.num5 {
+            color: #9e382c;
+        }
+        &.num6 {
+            color: #409488;
+        }
+        &.num7 {
+            color: black;
+        }
+        &.num8 {
+            color: #888;
+        }
+    }
+}

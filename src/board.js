@@ -278,7 +278,7 @@ class Board {
             if (minesCount == coveredCount) {
                 this.forEachNextTo(x, y, (px, py) => {
                     if (!this.isUncovered(px, py)) {
-                        this.setFlag(px, py, !(flagCount == minesCount));
+                        this.setFlag(px, py, true);
                     }
                 });
             }

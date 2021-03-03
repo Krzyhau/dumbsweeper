@@ -1,0 +1,1 @@
+Sebek zmusił mnie żebym to zrobił na streamie >=[

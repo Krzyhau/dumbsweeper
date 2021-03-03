@@ -262,9 +262,28 @@ class Board {
 
     // user input for flagging (right mouse button)
     userFlag(x, y) {
-        if (this.finished || !this.playing || this.isUncovered(x, y)) return;
+        if (this.finished || !this.playing) return;
 
-        this.setFlag(x, y, !this.isFlagged(x, y));
+        if (!this.isUncovered(x, y)) {
+            this.setFlag(x, y, !this.isFlagged(x, y));
+        } else {
+            let minesCount = 0;
+            let coveredCount = 0;
+            let flagCount = 0;
+            this.forEachNextTo(x, y, (px, py) => {
+                if (this.isMine(px, py)) minesCount++;
+                if (!this.isUncovered(px, py)) coveredCount++;
+                if (this.isFlagged(px, py)) flagCount++;
+            });
+            if (minesCount == coveredCount) {
+                this.forEachNextTo(x, y, (px, py) => {
+                    if (!this.isUncovered(px, py)) {
+                        this.setFlag(px, py, !(flagCount == minesCount));
+                    }
+                });
+            }
+        }
+        
 
         this.callChangedCallback();
     }

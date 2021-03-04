@@ -3,11 +3,14 @@ var boardDisplay;
 
 function GenerateBoard() {
     if (board) {
-        board.stopGame();
         delete board;
     }
     let boardData = GetInputs();
-    board = new Board(boardData.width, boardData.height, boardData.minecount);
+    board = new GamingBoard(
+        boardData.width,
+        boardData.height,
+        boardData.minecount
+    );
     if (!boardDisplay) {
         boardDisplay = new BoardDisplay("#board", board);
     } else {

@@ -10,6 +10,32 @@ class BoardDisplay {
             if (timer > 999.9) timer = 999.9;
             $("#time span").html(timer.toFixed(1));
         }, 100);
+
+        $(window).resize((e) => {
+            this.checkBoardSize();
+        });
+    }
+
+    checkBoardSize() {
+        let windowWidth = $(window).width();
+        let windowHeight = $(window).height() - $("#controls").height();
+        let windowRatio = windowWidth / windowHeight;
+        let boardRatio = this.board.width / this.board.height;
+
+        let size;
+        if (windowRatio < boardRatio || windowHeight < 300) {
+            size = (90 / this.board.width) + "vw";
+        } else {
+            size =
+                "calc(" +
+                90 / this.board.height +
+                "vh - " +
+                55 / this.board.height +
+                "px)";
+        }
+        this.div.css("font-size", size);
+
+        
     }
 
     setBoard(board) {
@@ -58,9 +84,10 @@ class BoardDisplay {
         this.refreshFlagCounter();
 
         this.div.empty();
-        this.div.css("width", this.board.width + "em");
-        this.div.css("height", this.board.height + "em");
+        this.checkBoardSize();
         this.div.css("display", "block");
+
+        this.div.toggleClass("game", !this.board.displayCovered);
 
         for (let y = 0; y < this.board.height; y++) {
             let line = $("<div></div>");
@@ -79,8 +106,10 @@ class BoardDisplay {
                         field.addClass("mistake");
                     }
                 }
-                if (this.board.isUncovered(x, y)) {
-                    field.addClass("uncovered");
+                if (this.board.isUncovered(x, y) || this.board.displayCovered) {
+                    if (this.board.isUncovered(x, y)) {
+                        field.addClass("uncovered");
+                    }
                     if (this.board.isMine(x, y)) {
                         // mina
                         field.addClass("mine");
@@ -104,18 +133,18 @@ class BoardDisplay {
 
                 field.on("contextmenu", (e) => {
                     e.preventDefault();
-                    this.board.userFlag(x, y);
+                    this.board.onUserClick(x, y, 2);
                 });
                 field.on("mouseup", (e) => {
                     if (e.button == 0) {
-                        this.board.userUncover(x, y, false);
+                        this.board.onUserClick(x, y, 0);
                     }
                 });
 
                 field.on("auxclick", (e) => {
-                    if (e.button != 2) {
+                    if (e.button == 1) {
                         e.preventDefault();
-                        this.board.userUncover(x, y, true);
+                        this.board.onUserClick(x, y, 1);
                     }
                 });
 

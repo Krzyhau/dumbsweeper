@@ -8,6 +8,11 @@
 @number-font: "Orbitron", Courier, monospace;
 @display-font: "Share Tech Mono", Courier, monospace;
 
+
+*{
+    box-sizing: border-box;
+}
+
 body {
     background-color: #111213;
     color: white;
@@ -20,6 +25,7 @@ body {
     width:100vw;
     height:100vh;
     overflow:hidden;
+    margin:0;
 }
 
 #settings {
@@ -56,7 +62,10 @@ body {
 }
 
 #game {
-    display: inline-block;
+    width:100vw;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
     padding: 0.5em;
     background-color: @color-main;
     font-size: 30px;
@@ -65,7 +74,8 @@ body {
 
 #controls {
     display: flex;
-    
+    justify-content: center;
+
     button{
         height:100%;
         background:@color-main;
@@ -90,6 +100,7 @@ body {
 .counter {
     height: 1.1em;
     margin-right: 0.5em;
+    white-space: nowrap;
     span {
         max-height: 1.1em;
         padding: 0.05em 0.1em;
@@ -105,6 +116,7 @@ body {
         font-weight: bold;
         color: #db311e;
         background: #1b0705;
+        box-sizing: content-box;
     }
 
     &:before {
@@ -137,17 +149,21 @@ body {
     }
 }
 
+
 #board .field.uncovered,
-body:active #board .field.selected {
-    border: 1px solid;
-    border-top-color: @color-main;
-    border-left-color: @color-main;
-    border-right-color: @color-shadow;
-    border-bottom-color: @color-shadow;
+body:active #board.game .field.selected {
+    &:after{
+        border: 1px solid;
+        border-top-color: @color-main;
+        border-left-color: @color-main;
+        border-right-color: @color-shadow;
+        border-bottom-color: @color-shadow;
+    }
 }
 
+
 #board {
-    margin-top: 0.5em;
+    margin: 0.5em auto 0;
     border: 0.15em solid;
     border-top-color: @color-shadow;
     border-left-color: @color-shadow;
@@ -170,17 +186,27 @@ body:active #board .field.selected {
         position: relative;
         z-index: 100;
 
-        background-color: @color-main;
-        border: 0.1em solid;
-        border-top-color: @color-highlight;
-        border-left-color: @color-highlight;
-        border-right-color: @color-shadow;
-        border-bottom-color: @color-shadow;
+        &:after{
+            content:'';
+            z-index:-1;
+            display:block;
+            position: absolute;
+            width:100%;
+            height:100%;
+            background-color: @color-main;
+            border: 0.1em solid;
+            box-sizing: border-box;
+            border-top-color: @color-highlight;
+            border-left-color: @color-highlight;
+            border-right-color: @color-shadow;
+            border-bottom-color: @color-shadow;
+        }
+        
 
         span {
             position: absolute;
             font-size: 0.8em;
-            top: -0.1em;
+            top: 0;
             right: 0.1em;
             left: 0;
             text-align: center;
@@ -192,7 +218,6 @@ body:active #board .field.selected {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-top: 0.1em;
 
         &.flag::before,
         &.mine::before {
@@ -213,12 +238,12 @@ body:active #board .field.selected {
         &.flag.mistake::before {
             width: 0.8em;
             height: 0.8em;
-            top: 0.05em;
+            top: 0.15em;
             background: url("img/mine.png");
             background-size: cover;
         }
 
-        &.mine.mistake {
+        &.mine.mistake:after {
             background: #e35241;
         }
 
